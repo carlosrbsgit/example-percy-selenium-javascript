@@ -18,14 +18,16 @@ async function cleanup({ driver, server, isError = 0 }) {
   process.exit(isError);
 }
 
+let options = new firefox.Options();
+options.setBinary('/Applications/Firefox.app/Contents/MacOS/firefox');
+options.headless();
+
 (async function() {
   let driver;
 
   try {
     driver = await new Builder()
-      .forBrowser('firefox').setFirefoxOptions(
-        new firefox.Options().headless()
-      ).build();
+        .forBrowser('firefox').setFirefoxOptions(options).build();
 
     async function emptyTodos() {
       await driver.get(TEST_URL);
